@@ -53,7 +53,7 @@ bot.on('/removeteam', async (msg) => {
   try {
     let res = await Model.removeTeam(teamId, userId, chatId)
     let message = `*${res.team.name}* (${teamId}) removed.`
-    msg.reply.text(message)
+    msg.reply.text(message, { parseMode: 'Markdown' })
   } catch (err) {
     msg.reply.text(err)
   }
@@ -87,7 +87,7 @@ bot.on(['/addscore', '/t'], async (msg) => {
   try {
     let res = await Model.addTeamScore(teamId, score, userId, chatId)
     let message = `*${res.team.name}* has *${res.team.score}* points.`
-    msg.reply.text(message)
+    msg.reply.text(message, { parseMode: 'Markdown' })
   } catch (err) {
     msg.reply.text(err)
   }
@@ -127,7 +127,7 @@ bot.on(['/displayscore', '/ds'], async (msg) => {
 
 // who command
 bot.on('/who', (msg) => {
-  msg.reply.text(`${msg.from.first_name} your ID is \`${msg.from.id}\``)
+  msg.reply.text(`${msg.from.first_name} your ID is \`${msg.from.id}\``, { parseMode: 'Markdown' })
 })
 
 // start bot
