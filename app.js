@@ -70,7 +70,7 @@ bot.on('/addteam', async (msg) => {
   try {
     await Model.addTeam(teamName, teamId, userId, chatId)
     let message = `*${teamName}* (${teamId}) created.`
-    msg.reply.text(message)
+    msg.reply.text(message, { parseMode: 'Markdown' })
   } catch (err) {
     msg.reply.text(err)
   }
@@ -122,7 +122,7 @@ bot.on(['/displayscore', '/ds'], async (msg) => {
     message += "No scores yet."
   }
 
-  msg.reply.text(message)
+  msg.reply.text(message, { parseMode: 'Markdown' })
 })
 
 // who command
