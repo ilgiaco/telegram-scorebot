@@ -4,6 +4,10 @@ const Model = require('./model')
 // setting up bot
 const bot = new Telebot(process.env.BOT_TOKEN)
 
+function escapeMarkdown(text) {
+  return String(text).replace(/([_*`\[])/g, '\\$1')
+}
+
 // start command
 bot.on('/start', async (msg) => {
   let message = ''
@@ -52,7 +56,7 @@ bot.on('/removeteam', async (msg) => {
   
   try {
     let res = await Model.removeTeam(teamId, userId, chatId)
-    let message = `*${res.team.name}* (${teamId}) removed.`
+    let message = `*${escapeMarkdown(res.team.name)}* (${escapeMarkdown(teamId)}) removed.`
     msg.reply.text(message, { parseMode: 'Markdown' })
   } catch (err) {
     msg.reply.text(err)
@@ -69,7 +73,7 @@ bot.on('/addteam', async (msg) => {
   
   try {
     await Model.addTeam(teamName, teamId, userId, chatId)
-    let message = `*${teamName}* (${teamId}) created.`
+    let message = `*${escapeMarkdown(teamName)}* (${escapeMarkdown(teamId)}) created.`
     msg.reply.text(message, { parseMode: 'Markdown' })
   } catch (err) {
     msg.reply.text(err)
@@ -86,7 +90,7 @@ bot.on(['/addscore', '/t'], async (msg) => {
  
   try {
     let res = await Model.addTeamScore(teamId, score, userId, chatId)
-    let message = `*${res.team.name}* has *${res.team.score}* points.`
+    let message = `*${escapeMarkdown(res.team.name)}* has *${res.team.score}* points.`
     msg.reply.text(message, { parseMode: 'Markdown' })
   } catch (err) {
     msg.reply.text(err)
@@ -116,7 +120,7 @@ bot.on(['/displayscore', '/ds'], async (msg) => {
   
   if(teamsModel != undefined){
     teamsModel.forEach(function (team) {
-      message += `${team.name} (${team.id}): *${team.score}*\n`
+      message += `${escapeMarkdown(team.name)} (${escapeMarkdown(team.id)}): *${team.score}*\n`
     });
   } else {
     message += "No scores yet."
@@ -127,7 +131,7 @@ bot.on(['/displayscore', '/ds'], async (msg) => {
 
 // who command
 bot.on('/who', (msg) => {
-  msg.reply.text(`${msg.from.first_name} your ID is \`${msg.from.id}\``, { parseMode: 'Markdown' })
+  msg.reply.text(`${escapeMarkdown(msg.from.first_name)} your ID is \`${msg.from.id}\``, { parseMode: 'Markdown' })
 })
 
 // start bot
